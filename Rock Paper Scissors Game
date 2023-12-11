@@ -1,0 +1,99 @@
+from tkinter import *
+import tkinter as tk
+from random import randint
+from PIL import Image,ImageTk
+
+window = tk.Toplevel()
+window.title("Rock Paper and Scissors Game")
+window.configure(background = "pink")
+
+image_rock1 = ImageTk.PhotoImage(Image.open("rock1.png"))
+image_paper1 = ImageTk.PhotoImage(Image.open("paper1.png"))
+image_scissors1 = ImageTk.PhotoImage(Image.open("scissors1.png"))
+image_rock2 = ImageTk.PhotoImage(Image.open("rock2.png"))
+image_paper2 = ImageTk.PhotoImage(Image.open("paper2.png"))
+image_scissors2 = ImageTk.PhotoImage(Image.open("scissors2.png"))
+
+label_player1 = Label(window,image=image_scissors1)
+label_player2 = Label(window,image=image_scissors2)
+label_player1.grid(row = 1,column = 0)
+label_player2.grid(row = 1,column = 4)
+
+player1_score = Label(window,text = 0,font = ('arial',60,'bold'),fg = "red")
+player2_score = Label(window,text = 0,font = ('arial',60,'bold'),fg = "red")
+player1_score.grid(row = 1,column = 1)
+player2_score.grid(row = 1,column = 3)
+
+player1_indicator = Label(window,font = ('arial',40,'bold'),text = "PLAYER1",bg = "orange",fg = "blue")
+player2_indicator = Label(window,font = ('arial',40,'bold'),text = "PLAYER2",bg = "orange",fg = "blue")
+player1_indicator.grid(row = 0,column = 1)
+player2_indicator.grid(row = 0,column = 3)
+
+def updateMessage(a):
+    final_message['text'] = a
+    
+def player1_Update():
+    final = int(player1_score['text'])
+    final += 1
+    player1_score["text"] = str(final)
+    
+def player2_Update():
+    final = int(player2_score['text'])
+    final += 1
+    player2_score["text"] = str(final)
+    
+def winner_check(p2,p1):
+    if p2 == p1:
+        updateMessage("It's a tie")
+    elif p2 == "rock":
+        if p1 == "paper":
+            updateMessage("Player1 Wins!")
+            player1_Update()
+        else:
+            updateMessage("Player2 Wins!")
+            player2_Update()
+    elif p2 == "paper":
+        if p1 == "scissors":
+            updateMessage("Player1 Wins!")
+            player1_Update()
+        else:
+            updateMessage("Player2 Wins!")
+            player2_Update()
+    elif p2 == "scissors":
+        if p1 == "rock":
+            updateMessage("Player1 Wins!")
+            player1_Update()
+        else:
+            updateMessage("Player2 Wins !")
+            player2_Update()
+    else:
+        pass
+    
+to_select = ["rock","paper","scissors"]
+
+def choice_Update(a):
+    choice_player1 = to_select[randint(0,2)]
+    if choice_player1 == "rock":
+        label_player1.configure(image = image_rock2)
+    elif choice_player1 == "paper":
+        label_player1.configure(image = image_paper2)
+    else:
+        label_player1.configure(image = image_scissors2)
+        
+    if a == "rock":
+        label_player2.configure(image = image_rock1)
+    elif a == "paper":
+        label_player2.configure(image = image_paper1)
+    else:
+        label_player2.configure(image = image_scissors1)
+        
+    winner_check(a, choice_player1)
+    
+final_message = Label(window,font = ('arial',40,'bold'),bg = "red",fg = "white")
+final_message.grid(row = 3,column = 2)
+
+button_rock = Button(window,width = 12,height = 3,text = "ROCK",font = ("arial",20,"bold"),bg = "yellow",fg = "red",command = lambda: choice_Update("rock")).grid(row = 2,column = 1)
+button_paper = Button(window,width = 12,height = 3,text = "PAPER",font = ("arial",20,"bold"),bg = "yellow",fg = "red",command = lambda: choice_Update("paper")).grid(row = 2,column = 2)
+button_scissors = Button(window,width = 12,height = 3,text = "SCISSORS",font = ("arial",20,"bold"),bg = "yellow",fg ="red",command = lambda: choice_Update("scissors")).grid(row = 2,column = 3)
+
+window.mainloop()
